@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const usersRouter = require("./routes/usersRegistration");
 mongoose.set("strictQuery", true);
 
 require("dotenv").config();
@@ -20,8 +21,6 @@ const connection = mongoose.connection;
 connection.once("open", () => {
   console.log("MongoDB database connection established successfully");
 });
-
-const usersRouter = require("./routes/usersRegistration");
 
 app.use("/fcm/internal", usersRouter);
 

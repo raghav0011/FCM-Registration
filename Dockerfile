@@ -1,7 +1,7 @@
-FROM node:16
+FROM node:alpine
 
 # Create app directory
-WORKDIR D:\Work and projects\WL work\User-registration API\user-registration API\backend
+WORKDIR /app
 
 # Copy the package.json and package-lock.json files to the container
 COPY package*.json ./
@@ -9,14 +9,10 @@ COPY package*.json ./
 # Install the dependencies
 RUN npm install
 
-# Copy the application code to the container
 COPY . .
 
 # Set the environment variable for the app port
-ENV PORT=3000
-
-# Expose the app port
-EXPOSE $PORT
+EXPOSE 5000
 
 # Start the app
-CMD ["npm", "start"]
+CMD ["node", "Server.js"]
