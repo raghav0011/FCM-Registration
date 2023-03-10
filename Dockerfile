@@ -16,3 +16,4 @@ EXPOSE 5000
 
 # Start the app
 CMD ["node", "Server.js"]
+# CMD ["npm", "run", "dev"]
