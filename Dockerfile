@@ -12,8 +12,8 @@ RUN npm install
 COPY . .
 
 # Set the environment variable for the app port
-EXPOSE 5000
+EXPOSE 3000
 
 # Start the app
-CMD ["node", "Server.js"]
-# CMD ["npm", "run", "dev"]
+# CMD ["npm", "Server.js"]
+CMD ["npm", "start"]

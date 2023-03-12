@@ -3,14 +3,17 @@ services:
   app:
     container_name: fcm-internal-docker
     build: .
+    command: npm run dev
     ports:
-      - "5000:5000"
+      - "3000:3000"
     networks:
       - fcm_service_network
+    depends_on:
+      - mongo
 
   mongo:
-    container_name: mongodb
     image: mongo:latest
+    container_name: mongodb
     volumes:
       - /mongodbdata:/data/db
       - ./init-mongo.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
