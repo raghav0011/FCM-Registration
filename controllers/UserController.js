@@ -48,7 +48,7 @@ const addUsers = async (req, res) => {
   try {
     const newUser = await User.create(req.body);
     res.json(success("success", newUser, 200));
-  } catch (error) {
+  } catch (err) {
     res.status(409).json(error("User already exists", res.statusCode));
   }
 };
@@ -75,7 +75,7 @@ const updateUser = async (req, res) => {
 
       res.json(success("success", req.params.username, 200));
     }
-  } catch (error) {
+  } catch (err) {
     res.status(500).json(error("Internal server error", res.statusCode));
   }
 };
@@ -95,7 +95,7 @@ const deleteUser = async (req, res) => {
       await User.deleteOne({ _id: user._id });
       res.json(success("success", user, 200));
     }
-  } catch (error) {
+  } catch (err) {
     res.status(500).json(error("Internal server error", res.statusCode));
   }
 };

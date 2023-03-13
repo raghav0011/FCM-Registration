@@ -1,7 +1,7 @@
 //THis is the reponse of API
 
 //When there is success
-exports.success = (message, results, statusCode) => {
+const success = (message, results, statusCode) => {
   return {
     message,
     error: false,
@@ -10,11 +10,13 @@ exports.success = (message, results, statusCode) => {
   };
 };
 
-//When there is error
-exports.error = (message, statusCode) => {
+const error = (message, statusCode) => {
   return {
     message,
     code: statusCode,
     error: true,
   };
 };
+
+module.exports = { success, error };
+//When there is error

@@ -5,7 +5,6 @@ const ownerShipArray = process.env.OWNERSHIP_ARRAY;
 
 function checkOwnership(req, res, next) {
   const collectionName = req.params.ownership;
-  console.log(collectionName);
   if (ownerShipArray.includes(collectionName)) {
     req.collectionName = collectionName; // set the collection name in the request object
     next();

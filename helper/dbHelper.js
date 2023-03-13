@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
 require("dotenv").config();
-
 const uri = process.env.LOCAL_URI;
 
 const mongoConnect = () => {
