@@ -3,11 +3,14 @@
 
 # This service is used to store the data of the user who have logged in
 
-###Technologies used
-Node js
-Express js
-Mongo DB
-Docker
+### Technologies used
+- Node js
+
+- Express js
+
+- Mongo DB
+
+- Docker
 
 ### GET Request URL of service
   >(http://localhost:3000/fcm/internal/:ownership)
