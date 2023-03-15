@@ -65,7 +65,9 @@ const updateUser = async (req, res) => {
     });
 
     if (!updatingUser) {
-      res.status(404).json(error("User not found", res.statusCode));
+      // res.status(404).json(error("User not found", res.statusCode));
+      const newUser = await User.create(req.body);
+      res.json(success("success", newUser, 200));
     } else {
       const updatedUser = await User.updateOne(updatingUser, req.body, {
         new: true,
