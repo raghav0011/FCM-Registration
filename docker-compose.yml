@@ -22,7 +22,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: root
       MONGO_INITDB_DATABASE: fcm_db
     ports:
-      - "27017:27017"
+      - "27018:27017"
     networks:
       - fcm_service_network
 
