@@ -2,6 +2,7 @@ const { mongoConnect } = require("../helper/dbHelper");
 const mongoose = require("mongoose");
 const userSchema = require("../models/userRegistration.model");
 const { success, error } = require("../Response/ApiResponse");
+const userData = require("../data/dummy_mock_up_data_external_fcm");
 
 //Get all users
 const getAllUsers = (req, res) => {
@@ -26,7 +27,7 @@ const getUsersByUsername = async (req, res) => {
 
   try {
     const oneUser = await User.findOne({
-      client_username: req.params.username,
+      CLIENT_USERNAME: req.params.username,
     });
 
     if (oneUser) {
@@ -39,17 +40,48 @@ const getUsersByUsername = async (req, res) => {
   }
 };
 
-//Add user
+//Add user static
+// const addUsers = async (req, res) => {
+//   mongoConnect();
+
+//   const User = mongoose.model(req.collectionName, userSchema);
+
+//   try {
+//     const newUser = await User.create(req.body);
+//     res.json(success("success", newUser, 200));
+//   } catch (err) {
+//     res.status(409).json(error("User already exists", res.statusCode));
+//   }
+// };
+
+//Adding user from the json file (50k)
 const addUsers = async (req, res) => {
   mongoConnect();
 
   const User = mongoose.model(req.collectionName, userSchema);
 
+  const countDuplicates = (arr) => {
+    const count = {};
+    arr.map((item) => {
+      count[item.REGISTRATION_ID] = (count[item.REGISTRATION_ID] || 0) + 1;
+    });
+    return count;
+  };
+  const duplicates = countDuplicates(userData);
+  const count = Object.values(duplicates).filter((value) => value > 1).length;
+
   try {
-    const newUser = await User.create(req.body);
-    res.json(success("success", newUser, 200));
+    const newUsers = await User.insertMany(userData);
+    res.json(
+      success(
+        "success",
+        [`Total User : ${newUsers.length}, Dublicated User: ${count}`],
+        200
+      )
+    );
   } catch (err) {
     res.status(409).json(error("User already exists", res.statusCode));
+    console.log(userData);
   }
 };
 
@@ -61,7 +93,7 @@ const updateUser = async (req, res) => {
 
   try {
     const updatingUser = await User.findOne({
-      client_username: req.params.username,
+      CLIENT_USERNAME: req.params.username,
     });
 
     if (!updatingUser) {
@@ -83,19 +115,39 @@ const updateUser = async (req, res) => {
 };
 
 //Delete user
+// const deleteUser = async (req, res) => {
+//   mongoConnect();
+
+//   const User = mongoose.model(req.collectionName, userSchema);
+
+//   try {
+//     const user = await User.findOne({ CLIENT_USERNAME: req.params.username });
+
+//     if (!user) {
+//       res.status(404).json(error("User not found", res.statusCode));
+//     } else {
+//       await User.deleteOne({ CLIENT_USERNAME: req.params.username });
+//       res.json(success("success", user, 200));
+//     }
+//   } catch (err) {
+//     res.status(500).json(error("Internal server error", res.statusCode));
+//   }
+// };
+
+//delete all user in database
 const deleteUser = async (req, res) => {
   mongoConnect();
 
   const User = mongoose.model(req.collectionName, userSchema);
 
   try {
-    const user = await User.findOne({ client_username: req.params.username });
+    const users = await User.find();
 
-    if (!user) {
-      res.status(404).json(error("User not found", res.statusCode));
+    if (!users || users.length === 0) {
+      res.status(404).json(error("No users found", res.statusCode));
     } else {
-      await User.deleteOne({ _id: user._id });
-      res.json(success("success", user, 200));
+      await User.deleteMany();
+      res.json(success("success", "deleted", 200));
     }
   } catch (err) {
     res.status(500).json(error("Internal server error", res.statusCode));

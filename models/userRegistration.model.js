@@ -4,36 +4,36 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema(
   {
-    client_username: {
+    CLIENT_USERNAME: {
       type: String,
       required: true,
-      unique: true,
-      uniqueCaseInsensitive: true,
     },
-    device_id: { type: String || Number, default: "" },
-    device_name: {
-      type: String || Number,
-    },
-    registration_id: {
-      type: String || Number,
-    },
-    ip: {
-      type: String || Number,
-    },
-    status: {
-      type: String || Number,
-    },
-    app_version: {
-      type: String || Number,
-    },
-    app_version_code: {
-      type: String || Number,
-    },
-    device_os: {
-      type: String || Number,
-    },
-    device_name: {
+    DEVICE_NAME: {
       type: String,
+    },
+    REGISTRATION_ID: {
+      type: String,
+    },
+    BLACKLIST: {
+      type: String,
+    },
+    ENABLE: {
+      type: String,
+    },
+    APP_VERSION: {
+      type: String,
+    },
+    APP_VERSION_CODE: {
+      type: String,
+    },
+    DEVICE_OS: {
+      type: String,
+    },
+    DEVICE_NAME: {
+      type: String,
+    },
+    LOGGED_CELL_NUMBER: {
+      type: Number,
     },
   },
   {

@@ -4,7 +4,7 @@ require("dotenv").config();
 const ownerShipArray = process.env.OWNERSHIP_ARRAY;
 
 function checkOwnership(req, res, next) {
-  const collectionName = req.params.ownership;
+  const collectionName = req.query.ownership;
   if (ownerShipArray.includes(collectionName)) {
     req.collectionName = collectionName; // set the collection name in the request object
     next();
