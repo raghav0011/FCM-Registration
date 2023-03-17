@@ -6,21 +6,24 @@ const {
   updateUser,
   deleteUser,
 } = require("../controllers/UserController");
-const { checkOwnership } = require("../middleware/CheckOwnershipMiddleware");
+// const { checkOwnership } = require("../middleware/CheckOwnershipMiddleware");
 
 // Get all users and check if the database is empty or not
-router.get("/:ownership", checkOwnership, getAllUsers);
+router.get("/", getAllUsers);
 
 // Get user by username
-router.get("/:ownership/:username", checkOwnership, getUsersByUsername);
+router.get("/:username", getUsersByUsername);
 
 // Add user
-router.post("/add/:ownership", checkOwnership, addUsers);
+router.post("/add/", addUsers);
 
 // Update user
-router.put("/update/:username/:ownership", checkOwnership, updateUser);
+router.put("/update/:username/", updateUser);
 
 // Delete user
-router.delete("/remove/:username/:ownership", checkOwnership, deleteUser);
+// router.delete("/remove/:username/:ownership",  deleteUser);
+
+//Delete all user
+router.delete("/remove/", deleteUser);
 
 module.exports = router;
