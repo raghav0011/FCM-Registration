@@ -47,4 +47,16 @@ module.exports = [
     ENABLE: "y",
     BLACKLIST: "n",
   },
+  {
+    REGISTRATION_ID:
+      "c2ik5NkgRtC7HOW125o9eU:APA91bEi_VOUTVDIyXQh_2DmPz8HsMDHeUlKj9s5J8AF0P33NJMJHFlJcGO-L7l7LDEavw-SCNWJ0Myy3Etk1I60v-GIHYq0FJVvNBg8CLoU4bYCCdlM1ItYqaZ6xnAyM-pe7s1EyD1U",
+    CLIENT_USERNAME: "####ar_fbrtn",
+    DEVICE_OS: "ANDROID",
+    DEVICE_NAME: "",
+    APP_VERSION: "2023010215",
+    APP_VERSION_CODE: "",
+    LOGGED_CELL_NUMBER: "9803011321",
+    ENABLE: "y",
+    BLACKLIST: "n",
+  },
 ];

@@ -11,7 +11,7 @@ const getAllUsers = (req, res) => {
   User.find()
     .then((userList) => {
       !userList.length
-        ? res.status(404).json(error("There is no any data", res.statusCode))
+        ? res.status(404).json(error("There no any data", res.statusCode))
         : res.json(success("success", userList, 200));
     })
     .catch((err) =>
@@ -60,28 +60,59 @@ const addUsers = async (req, res) => {
 
   const User = mongoose.model(req.collectionName, userSchema);
 
-  const countDuplicates = (arr) => {
-    const count = {};
-    arr.map((item) => {
-      count[item.REGISTRATION_ID] = (count[item.REGISTRATION_ID] || 0) + 1;
-    });
-    return count;
-  };
-  const duplicates = countDuplicates(userData);
-  const count = Object.values(duplicates).filter((value) => value > 1).length;
-
   try {
+    function findOcc(arr, key) {
+      let arr2 = [];
+
+      arr.forEach((x) => {
+        // Checking if there is any object in arr2
+        // which contains the key value
+        if (
+          arr2.some((val) => {
+            return val[key] == x[key];
+          })
+        ) {
+          // If yes! then increase the occurrence by 1
+          arr2.forEach((k) => {
+            if (k[key] === x[key]) {
+              k["occurrence"]++;
+            }
+          });
+        } else {
+          // If not! Then create a new object initialize
+          // it with the present iteration key's value and
+          // set the occurrence to 1
+          let a = {};
+          a[key] = x[key];
+          a["occurrence"] = 1;
+          arr2.push(a);
+        }
+      });
+
+      return arr2;
+    }
+
+    let key = "CLIENT_USERNAME";
+    const string = findOcc(userData, key);
+    // console.log(findOcc(userData, key));
+    // const dublicate = JSON.stringify(string);
+    console.log(string);
+
     const newUsers = await User.insertMany(userData);
+
     res.json(
       success(
         "success",
-        [`Total User : ${newUsers.length}, Dublicated User: ${count}`],
+        [
+          { "Total user": newUsers.length },
+          { "Dublicated User Count": string.length },
+          { "Dublicated User List": string },
+        ],
         200
       )
     );
   } catch (err) {
     res.status(409).json(error("User already exists", res.statusCode));
-    console.log(userData);
   }
 };
 
