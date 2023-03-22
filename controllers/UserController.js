@@ -2,7 +2,7 @@ const { mongoConnect } = require("../helper/dbHelper");
 const mongoose = require("mongoose");
 const userSchema = require("../models/userRegistration.model");
 const { success, error } = require("../Response/ApiResponse");
-const userData = require("../data/dummy_mock_up_data_external_fcm");
+const userData = require("../data/fake");
 
 //Get all users
 const getAllUsers = (req, res) => {
@@ -19,102 +19,101 @@ const getAllUsers = (req, res) => {
     );
 };
 
-//Get users by username
+//Get users by filter
 const getUsersByUsername = async (req, res) => {
   mongoConnect();
 
   const User = mongoose.model(req.collectionName, userSchema);
 
   try {
-    const oneUser = await User.findOne({
-      CLIENT_USERNAME: req.params.username,
-    });
+    const filterReq = req.query.filter;
+    const Users = await User.find(filterReq);
 
-    if (oneUser) {
-      res.status(200).json(success("success", oneUser, res.statusCode));
-    } else {
+    if (Users.length == 0) {
       res.status(404).json(error("User not found", res.statusCode));
+    } else {
+      res.status(200).json(success("success", Users, res.statusCode));
     }
   } catch (error) {
     res.status(500).json(error("Internal server error", res.statusCode));
   }
 };
 
-//Add user static
-// const addUsers = async (req, res) => {
-//   mongoConnect();
-
-//   const User = mongoose.model(req.collectionName, userSchema);
-
-//   try {
-//     const newUser = await User.create(req.body);
-//     res.json(success("success", newUser, 200));
-//   } catch (err) {
-//     res.status(409).json(error("User already exists", res.statusCode));
-//   }
-// };
-
-//Adding user from the json file (50k)
+// Add user static
 const addUsers = async (req, res) => {
   mongoConnect();
 
   const User = mongoose.model(req.collectionName, userSchema);
 
   try {
-    function findOcc(arr, key) {
-      let arr2 = [];
-
-      arr.forEach((x) => {
-        // Checking if there is any object in arr2
-        // which contains the key value
-        if (
-          arr2.some((val) => {
-            return val[key] == x[key];
-          })
-        ) {
-          // If yes! then increase the occurrence by 1
-          arr2.forEach((k) => {
-            if (k[key] === x[key]) {
-              k["occurrence"]++;
-            }
-          });
-        } else {
-          // If not! Then create a new object initialize
-          // it with the present iteration key's value and
-          // set the occurrence to 1
-          let a = {};
-          a[key] = x[key];
-          a["occurrence"] = 1;
-          arr2.push(a);
-        }
-      });
-
-      return arr2;
-    }
-
-    let key = "CLIENT_USERNAME";
-    const string = findOcc(userData, key);
-    // console.log(findOcc(userData, key));
-    // const dublicate = JSON.stringify(string);
-    console.log(string);
-
-    const newUsers = await User.insertMany(userData);
-
-    res.json(
-      success(
-        "success",
-        [
-          { "Total user": newUsers.length },
-          { "Dublicated User Count": string.length },
-          { "Dublicated User List": string },
-        ],
-        200
-      )
-    );
+    const newUser = await User.create(req.body);
+    res.json(success("success", newUser, 200));
   } catch (err) {
     res.status(409).json(error("User already exists", res.statusCode));
   }
 };
+
+//Adding user from the json file (50k)
+// const addUsers = async (req, res) => {
+//   mongoConnect();
+
+//   const User = mongoose.model(req.collectionName, userSchema);
+
+//   try {
+//     function findOcc(arr, key) {
+//       let arr2 = [];
+
+//       arr.forEach((x) => {
+//         // Checking if there is any object in arr2
+//         // which contains the key value
+//         if (
+//           arr2.some((val) => {
+//             return val[key] == x[key];
+//           })
+//         ) {
+//           // If yes! then increase the occurrence by 1
+//           arr2.forEach((k) => {
+//             if (k[key] === x[key]) {
+//               k["occurrence"]++;
+//             }
+//           });
+//         } else {
+//           // If not! Then create a new object initialize
+//           // it with the present iteration key's value and
+//           // set the occurrence to 1
+//           let a = {};
+//           a[key] = x[key];
+//           a["occurrence"] = 1;
+//           arr2.push(a);
+//         }
+//       });
+
+//       return arr2;
+//     }
+
+//     let key = "client_username";
+//     const string = findOcc(userData, key);
+//     // console.log(findOcc(userData, key));
+//     // const dublicate = JSON.stringify(string);
+//     console.log(string);
+
+//     const newUsers = await User.insertMany(userData);
+
+//     res.json(
+//       success(
+//         "success",
+//         [
+//           { "Total user": newUsers.length },
+//           { "Dublicated User Count": string.length },
+//           { "Dublicated User List": string },
+//         ],
+//         200
+//       )
+//     );
+//   } catch (err) {
+//     res.status(409).json(error("User already exists", res.statusCode));
+//   }
+// };
 
 //Update User
 const updateUser = async (req, res) => {

@@ -5,35 +5,35 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema(
   [
     {
-      CLIENT_USERNAME: {
+      client_username: {
         type: String,
         required: true,
       },
-      DEVICE_NAME: {
+      device_name: {
         type: String,
       },
-      REGISTRATION_ID: {
+      registration_id: {
         type: String,
       },
-      BLACKLIST: {
+      blacklist: {
         type: String,
       },
-      ENABLE: {
+      enable: {
         type: String,
       },
-      APP_VERSION: {
+      app_version: {
         type: String,
       },
-      APP_VERSION_CODE: {
+      app_version_code: {
         type: String,
       },
-      DEVICE_OS: {
+      device_os: {
         type: String,
       },
-      DEVICE_NAME: {
+      device_name: {
         type: String,
       },
-      LOGGED_CELL_NUMBER: {
+      logged_cell_number: {
         type: Number,
       },
     },

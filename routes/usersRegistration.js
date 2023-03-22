@@ -12,7 +12,7 @@ const {
 router.get("/", getAllUsers);
 
 // Get user by username
-router.get("/:username", getUsersByUsername);
+router.get("/filter", getUsersByUsername);
 
 // Add user
 router.post("/add/", addUsers);
