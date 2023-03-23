@@ -27,8 +27,9 @@ const getUsersByUsername = async (req, res) => {
 
   try {
     const filterReq = req.query.filter;
+    console.log(filterReq);
     const Users = await User.find(filterReq);
-
+    console.log(Users);
     if (Users.length == 0) {
       res.status(404).json(error("User not found", res.statusCode));
     } else {
